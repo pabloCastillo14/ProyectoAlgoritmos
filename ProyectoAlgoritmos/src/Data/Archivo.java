@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Data;
 
 import Domain.Pelicula;
 import com.csvreader.CsvReader;
-import java.awt.List;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import com.csvreader.CsvWriter;
 import java.io.FileNotFoundException;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -22,103 +17,117 @@ import java.io.FileNotFoundException;
  */
 public class Archivo {
 
-    File file = new File("datos.csv");
+    ListaCircular listaGeneral;
+    ListaCircular drama;
+    ListaCircular comedia;
+    ListaCircular chilldish;
+    ListaCircular action;
+    ListaCircular romance;
+    ListaCircular fiction;
+    String ruta = "";
 
-    public void insertarArchivo(Pelicula pelicula) {
+    public Archivo() {
+        listaGeneral = new ListaCircular();
+        drama = new ListaCircular();
+        comedia = new ListaCircular();
+        chilldish = new ListaCircular();
+        action = new ListaCircular();
+        romance = new ListaCircular();
+        fiction = new ListaCircular();
+    }//constructor
 
-        //String outputFile = "Empleados3.csv";
-        boolean alreadyExists = new File("datos").exists();
-
-        if (alreadyExists) {
-            File ArchivoEmpleados = new File("datos");
-            ArchivoEmpleados.delete();
+    public String fileChoooserData() {
+        JOptionPane.showMessageDialog(null, "selecciones el archivo a utilizar");
+        boolean verifica = true;
+        while (verifica == true) {
+            JFileChooser file = new JFileChooser();
+            file.showOpenDialog(file);
+            File abrir = file.getSelectedFile();
+            if (abrir.getPath().indexOf(".csv") != -1) {
+                this.ruta = String.valueOf(abrir);
+                JOptionPane.showMessageDialog(null, "el archivo es valido");
+                verifica = false;
+            } else {
+                JOptionPane.showMessageDialog(null, "el archivo es invalido");
+                JOptionPane.showMessageDialog(null, "por favor cargue un archivo");
+            }
         }
+        return ruta;
+    }//fileChoooserData()
 
+    public void insertarArchivo(Pelicula pelicula, String ruta) {
+        File file = new File(ruta);
+        boolean alreadyExists = new File("datos").exists();
+        if (alreadyExists) {
+            File ArchivoPeliculas = new File("datos");
+            ArchivoPeliculas.delete();
+        }//if
         try {
-
             CsvWriter csvOutput = new CsvWriter(new FileWriter(file, true), ',');
-
+            int cont = (int) file.length();
+            cont = cont + 1;
+            String codigo = "";
+            codigo = codigo.valueOf(cont);
+            pelicula.setCode(codigo);
             csvOutput.write((pelicula.getCode()));
-            csvOutput.write(pelicula.getTitulo());
-            csvOutput.write(pelicula.getGenero());
+            csvOutput.write(pelicula.getTitle());
+            csvOutput.write(pelicula.getGendeer());
             csvOutput.write(pelicula.getTotal());
             csvOutput.write(pelicula.getSubtitle());
             csvOutput.write(pelicula.getPremier());
             csvOutput.endRecord();
             csvOutput.close();
-
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }//try-catch
+    }//insertarArchivo
 
-    }
-
-    public void leerArchivo() {
+    public ListaCircular[] leerArchivo(String path) {
+        ArrayList<Pelicula> lista1 = new ArrayList<>();
         try {
-          
-            CsvReader empleados_import = new CsvReader("datos.csv");
-            empleados_import.readHeaders();
-            Pelicula peliNueva = new Pelicula();
-            while (empleados_import.readRecord()) {
-
-
-                String codigo = empleados_import.get(0);
-                String titulo = empleados_import.get(1);
-                String genero = empleados_import.get(2);
-                String total = empleados_import.get(3);
-                String subtitulo = empleados_import.get(4);
-                String premier = empleados_import.get(5);
+            CsvReader peliculas_import = new CsvReader(path);
+            peliculas_import.readHeaders();
+            while (peliculas_import.readRecord()) {
+                Pelicula peliNueva = new Pelicula();
+                String codigo = peliculas_import.get(0);
+                String titulo = peliculas_import.get(1);
+                String genero = peliculas_import.get(2);
+                String total = peliculas_import.get(3);
+                String subtitulo = peliculas_import.get(4);
+                String premier = peliculas_import.get(5);
                 peliNueva.setCode(codigo);
-                peliNueva.setTitulo(titulo);
-                peliNueva.setGenero(genero);
+                peliNueva.setTitle(titulo);
+                peliNueva.setGender(genero);
                 peliNueva.setTotal(total);
                 peliNueva.setSubtitle(subtitulo);
                 peliNueva.setPremier(premier);
-//                JOptionPane.showMessageDialog(null, peliNueva);
-Action a=new Action();                
-dividirPeliculasGenero(peliNueva);
-
-               // a.insertInOrder(peliNueva);
-          //  a.printList();
-            
-            }
-
-            empleados_import.close();
-
+                if (peliNueva.getGendeer().equals("1000")) {
+                    drama.insertInOrder(peliNueva);
+                } else if (peliNueva.getGendeer().equals("2000")) {
+                    comedia.insertInOrder(peliNueva);
+                } else if (peliNueva.getGendeer().equals("3000")) {
+                    chilldish.insertInOrder(peliNueva);
+                } else if (peliNueva.getGendeer().equals("4000")) {
+                    action.insertInOrder(peliNueva);
+                } else if (peliNueva.getGendeer().equals("5000")) {
+                    romance.insertInOrder(peliNueva);
+                } else if (peliNueva.getGendeer().equals("6000")) {
+                    fiction.insertInOrder(peliNueva);
+                }//if-else/s
+            }//while
+            peliculas_import.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void dividirPeliculasGenero(Pelicula peliNueva) {
-
-        if (peliNueva.getGenero().equals("1000")) {
-            Drama lista = new Drama();
-            lista.insertInOrder(peliNueva);
-            //lista.desplegar();
-        }else if(peliNueva.getGenero().equals("2000")){
-        Comedy comedia=new Comedy();
-        comedia.insertInOrder(peliNueva);
-         // comedia.desplegar();
-        }else if(peliNueva.getGenero().equals("3000")){
-        Childish c=new Childish();
-        c.insertInOrder(peliNueva);
-        
-        }else if(peliNueva.getGenero().equals("4000")){
-        Action accion=new Action();
-        accion.insertInOrder(peliNueva);
-      
-        }else if(peliNueva.getGenero().equals("5000")){
-        Romance romance=new Romance();
-        romance.insertInOrder(peliNueva);
-        romance.printList();
-        }else if(peliNueva.getGenero().equals("6000")){
-        Fiction fiction=new Fiction();
-        fiction.insertInOrder(peliNueva);
-        }
-    
-    }
-
-}
+        }//try-catch
+        ListaCircular vector[] = new ListaCircular[6];
+        vector[0] = drama;
+        vector[1] = comedia;
+        vector[2] = chilldish;
+        vector[3] = action;
+        vector[4] = romance;
+        vector[5] = fiction;
+        return vector;
+    }//leerArchivo
+}//fin clase

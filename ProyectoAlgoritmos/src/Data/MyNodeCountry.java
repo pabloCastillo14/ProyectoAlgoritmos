@@ -1,23 +1,22 @@
-
 package Data;
 
 import Domain.Pelicula;
 
 /**
  *
- * @author Pablo Castillo
+ * @author hanse
  */
 public class MyNodeCountry {
-    
+
     Pelicula pelicula;
     MyNodeCountry next;
     MyNodeCountry prev;
 
     public MyNodeCountry(Pelicula dato) {
         this.pelicula = dato;
-        this.next=null;
-        this.prev=null;
-    }
+        this.next = null;
+        this.prev = null;
+    }//constructor
 
     public Pelicula getPelicula() {
         return pelicula;
@@ -42,9 +41,5 @@ public class MyNodeCountry {
     public void setPrev(MyNodeCountry prev) {
         this.prev = prev;
     }
-    
 
-    
-    
-    
 }

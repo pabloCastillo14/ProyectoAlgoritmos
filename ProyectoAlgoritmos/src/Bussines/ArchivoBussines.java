@@ -6,28 +6,25 @@
 package Bussines;
 
 import Data.Archivo;
+import Data.ListaCircular;
 import Domain.Pelicula;
 
 /**
  *
- * @author Pablo Castillo
+ * @author hanse
  */
 public class ArchivoBussines {
     Archivo archivoData;
 
     public ArchivoBussines() {
-        archivoData=new Archivo();
-    }
-    
-    
-    public void insertarArchivoBussiness(Pelicula pelicula) {
+        archivoData = new Archivo();
+    }//constructor
 
+    public void insertarArchivoBussiness(Pelicula pelicula, String ruta) {
+        this.archivoData.insertarArchivo(pelicula, ruta);
+    }//insertarArchivoBussiness
 
-        this.archivoData.insertarArchivo(pelicula);
-    }
-    
-    public void leerArchivoBussiness() {
-        archivoData.leerArchivo();
-    }
-    
-}
+    public ListaCircular[] leerArchivoBussiness(String ruta) {
+        return this.archivoData.leerArchivo(ruta);
+    }//leerArchivoBussiness
+}//fin clase

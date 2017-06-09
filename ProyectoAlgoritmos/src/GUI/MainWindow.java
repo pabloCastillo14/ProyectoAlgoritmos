@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
+import Data.Archivo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JDesktopPane;
@@ -16,68 +12,78 @@ import javax.swing.JMenuItem;
 
 /**
  *
- * @author hansel
+ * @author hanse
  */
-public class MainWindow extends JFrame implements ActionListener{
+public class MainWindow extends JFrame implements ActionListener {
+
     private JDesktopPane desktopPane;
     private JMenuBar jmbMenu;
     private JMenu jmOpciones;
-    private JMenuItem jmiInsertarPelicula,jmiBuscarPelicula, jmiMostrarPeliculas;
-    public MainWindow(){
+    private JMenuItem jmiInsertarPelicula, jmiBuscarPelicula, jmiBuscar, jmiListaGeneral;
+    String ruta;
+
+    public MainWindow() {
         super("Renta de Peliculas");
-        this.setSize(800,600);
+
+        Archivo archivo = new Archivo();
+
+        String path = archivo.fileChoooserData();
+        this.ruta = path;
+        this.setSize(800, 600);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.desktopPane=new JDesktopPane();
+        this.desktopPane = new JDesktopPane();
         this.desktopPane.setLayout(null);
         this.init();
         this.add(this.desktopPane);
         this.setVisible(true);
     } //constructor
-    
-    public void init(){
-        this.jmbMenu=new JMenuBar();
+
+    public void init() {
+        this.jmbMenu = new JMenuBar();
         this.setJMenuBar(this.jmbMenu);
-        
-        this.jmOpciones=new JMenu("Menu");
+
+        this.jmOpciones = new JMenu("Menu");
         this.jmbMenu.add(this.jmOpciones);
-        
-        this.jmiInsertarPelicula=new JMenuItem("Insetar Pelicula"); 
+
+        this.jmiInsertarPelicula = new JMenuItem("Insetar Pelicula");
         this.jmiInsertarPelicula.addActionListener(this);
         this.jmOpciones.add(this.jmiInsertarPelicula);
-        
-        this.jmiBuscarPelicula=new JMenuItem("Buscar Pelicula");
+
+        this.jmiBuscarPelicula = new JMenuItem("Buscar Pelicula");
         this.jmiBuscarPelicula.addActionListener(this);
         this.jmOpciones.add(this.jmiBuscarPelicula);
-        
-        this.jmiMostrarPeliculas=new JMenuItem("Mostrar todas las Pelicula");
-        this.jmiMostrarPeliculas.addActionListener(this);
-        this.jmOpciones.add(this.jmiMostrarPeliculas);
-        
-    }//public void init()
-    
-    
+
+        this.jmiBuscar = new JMenuItem("Buscar Pelicula por nombre");
+        this.jmiBuscar.addActionListener(this);
+        this.jmOpciones.add(this.jmiBuscar);
+
+        this.jmiListaGeneral = new JMenuItem("listado General");
+        this.jmiListaGeneral.addActionListener(this);
+        this.jmOpciones.add(this.jmiListaGeneral);
+
+    }//init
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==this.jmiInsertarPelicula){
-            InsertMovie insert=new InsertMovie();
+        if (e.getSource() == this.jmiInsertarPelicula) {
+            InsertMovie insert = new InsertMovie(ruta);
             insert.setFocusable(true);
             insert.setVisible(true);
             this.desktopPane.add(insert);
-        }
-        else if(e.getSource()==this.jmiBuscarPelicula){
-            SearchMovie search=new SearchMovie();
+        } else if (e.getSource() == this.jmiBuscarPelicula) {
+            SearchMovie search = new SearchMovie(ruta);
             search.setFocusable(true);
             search.setVisible(true);
             this.desktopPane.add(search);
-        }
-        else if(e.getSource()==this.jmiMostrarPeliculas){
-            TablaMostrarListaCompleta listaPelis=new TablaMostrarListaCompleta();
-            listaPelis.setFocusable(true);
-            listaPelis.setVisible(true);
-//            this.desktopPane.add(listaPelis);
-        }
-        
-//else if(e.getSource()==this.jmiLogin)
-    }//public void actionPerformed(ActionEvent e) 
-}//fin clase ventana
+        } else if (e.getSource() == this.jmiBuscar) {
+            MuestraUnaPelicula muestra = new MuestraUnaPelicula(ruta);
+            muestra.setFocusable(true);
+            muestra.setVisible(true);
+            this.desktopPane.add(muestra);
+        } else if (e.getSource() == this.jmiListaGeneral) {
+            ListadoGeneral general = new ListadoGeneral(ruta);
+            general.setFocusable(true);
+            general.setVisible(true);
+        }//if-else
+    }//actionPerformed(ActionEvent e) 
+}//fin clase

@@ -7,26 +7,26 @@ package Domain;
 public class Pelicula {
 
     private String code;
-    private String titulo;
-    private String genero;
+    private String title;
+    private String gender;
     private String total;
     private String subtitle;
     private String premier;
 
     public Pelicula() {
         this.code = "";
-        this.titulo = "";
-        this.genero = "";
+        this.title = "";
+        this.gender = "";
         this.total = "";
         this.subtitle = "";
         this.premier = "";
 
     }
 
-    public Pelicula(String code, String titulo, String genero, String total, String subtitle, String premier) {
+    public Pelicula(String code, String title, String gender, String total, String subtitle, String premier) {
         this.code = code;
-        this.titulo = titulo;
-        this.genero = genero;
+        this.title = title;
+        this.gender = gender;
         this.total = total;
         this.subtitle = subtitle;
         this.premier = premier;
@@ -40,20 +40,20 @@ public class Pelicula {
         this.code = code;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getGenero() {
-        return genero;
+    public String getGendeer() {
+        return gender;
     }
 
-    public void setGenero(String genero) {
-        this.genero = genero;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getTotal() {
@@ -82,9 +82,6 @@ public class Pelicula {
 
     @Override
     public String toString() {
-        return "Pelicula{" + "code=" + code + ", titulo=" + titulo + ", genero=" + genero + ", total=" + total + ", subtitle=" + subtitle + ", premier=" + premier + '}';
+        return "Pelicula{" + "code=" + code + ", title=" + title + ", gender=" + gender + ", total=" + total + ", subtitle=" + subtitle + ", premier=" + premier + '}';
     }
-
-    
-
 }//fin clase
